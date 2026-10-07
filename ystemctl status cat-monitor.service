@@ -1,0 +1,19 @@
+[0;1;34m# ]8;;file://pi5-max/etc/systemd/system/cat-monitor.service\/etc/systemd/system/cat-monitor.service]8;;\[0m
+[0;1;36m[Unit][0m
+[0;1;32mDescription=[0mCat Monitor Application with tmux
+[0;1;32mAfter=[0mnetwork-online.target
+[0;1;32mWants=[0mnetwork-online.target
+[0;1;38:5:245m[0m
+[0;1;36m[Service][0m
+[0;1;32mType=[0mforking
+[0;1;32mUser=[0mpi5-max
+[0;1;32mWorkingDirectory=[0m/home/pi5-max/cat_monitor
+[0;1;32mExecStart=[0m/home/pi5-max/cat_monitor/start_app.sh
+[0;1;32mExecStop=[0m/home/pi5-max/cat_monitor/stop_app.sh
+[0;1;32mRestart=[0mon-failure
+[0;1;32mRestartSec=[0m10
+[0;1;32mStandardOutput=[0mjournal
+[0;1;32mStandardError=[0mjournal
+[0;1;38:5:245m[0m
+[0;1;36m[Install][0m
+[0;1;32mWantedBy=[0mmulti-user.target

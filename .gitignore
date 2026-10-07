@@ -1,0 +1,9 @@
+.venv/
+__pycache__/
+*.pyc
+.lgd-nfy0
+auto.crt
+auto.key
+*.mp4
+*.log
+*.png

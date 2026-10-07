@@ -1,0 +1,18 @@
+[Unit]
+Description=Cat Monitor Application with tmux
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=forking
+User=pi5-max
+WorkingDirectory=/home/pi5-max/cat_monitor
+ExecStart=/home/pi5-max/cat_monitor/start_app.sh
+ExecStop=/home/pi5-max/cat_monitor/stop_app.sh
+Restart=on-failure
+RestartSec=10
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=multi-user.target
