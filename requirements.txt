@@ -1,0 +1,6 @@
+flask
+pillow
+numpy
+astral
+adafruit-blinka
+adafruit-circuitpython-neopixel
