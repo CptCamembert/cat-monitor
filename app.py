@@ -36,6 +36,7 @@ except Exception as exc:  # pragma: no cover
 
 PIXEL_COUNT = 12
 PIXEL_PIN = board.D12
+LED_OFFSET = 2
 
 IDLE_COLOR = (2, 0, 0)
 
@@ -58,7 +59,7 @@ ALARM_TIMES = ["06:58","11:58","16:58","21:58"]
 ALARM_EFFECT_DURATION = 300
 ALARM_EFFECT_COLOR = (0, 0, 10)
 
-ALARM_RADIO_DURATION = 300
+ALARM_RADIO_DURATION = 180
 ALARM_RADIO_VOLUME = 0.5
 RADIO_URL = "https://knkx-live-a.edge.audiocdn.com/6285_128k"
 
@@ -113,8 +114,8 @@ app.logger.info(f"IR will toggle on at  {IR_ON_TIME.strftime('%H:%M')}")
 current_IR_mode = None
 desired_IR_mode = not(sunrise_time < now < sunset_time)
 IR_BRIGHTNESS_THRESHOLD_PERCENTILE = 70
-IR_BRIGHTNESS_THRESHOLD_UPPER = 32
-IR_BRIGHTNESS_THRESHOLD_LOWER = 28
+IR_BRIGHTNESS_THRESHOLD_UPPER = 40
+IR_BRIGHTNESS_THRESHOLD_LOWER = 30
 
 camera_lock = threading.Lock()
 
@@ -124,9 +125,9 @@ camera_lock = threading.Lock()
 effect_thread = threading.Thread()
 record_thread = threading.Thread()
 
-def _apply_led_color(color: list[int]) -> None:
-  pixels.fill(tuple(color))
-  pixels.show()
+# def _apply_led_color(color: list[int]) -> None:
+#   pixels.fill(tuple(color))
+#   pixels.show()
 
 def _apply_ir() -> None:
   # are we in IR-mode?
@@ -221,9 +222,17 @@ def trigger_alarm():
 def run_effect():
   # make led ring blue
   app.logger.info("Effect thread started")
-  _apply_led_color(ALARM_EFFECT_COLOR)
+
+  now = datetime.now()
+  hour = now.hour
+  hour_index = (hour + 1) % 12
+  hour_pixel = (hour_index + LED_OFFSET) % PIXEL_COUNT
+
+  pixels.fill(ALARM_EFFECT_COLOR)
+  pixels[hour_pixel] = (0, 0, 0)
+  pixels.show()
+
   time.sleep(ALARM_EFFECT_DURATION)
-  _apply_led_color(IDLE_COLOR)
   app.logger.info("Effect thread stopped")
 
 def run_radio():
@@ -575,7 +584,6 @@ def viewer_alive():
 
 # ---------- analog clock ----------
 
-LED_OFFSET = 3
 
 def run_analog_clock() -> None:
   # make the LED ring into an anlog clock
@@ -601,7 +609,6 @@ def run_analog_clock() -> None:
 # ---------- entry point ----------
 
 if __name__ == "__main__":
-  _apply_led_color(IDLE_COLOR)
   # timer thread
   timer_thread = threading.Thread(target=run_timer, daemon=True)
   timer_thread.start()

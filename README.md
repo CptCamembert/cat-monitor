@@ -44,6 +44,7 @@ app_BU.py                   Older backup version of the app (web-controlled LEDs
                              alarm_settings.json) — kept for reference, not run in production
 test.py                     Offline script that analyzes Images/bright and Images/dark samples
                              to help tune the IR_BRIGHTNESS_THRESHOLD_* constants in app.py
+requirements.txt            Python dependencies for the venv
 Images/bright, Images/dark  Sample snapshots used by test.py (gitignored)
 mediamtx                    MediaMTX binary (streaming server)
 mediamtx_RGB.yml            MediaMTX config used during the day (daytime camera pipeline)
@@ -68,7 +69,7 @@ creating it (the `activate` script hardcodes its own absolute path).
 ```bash
 cd /home/pi5-max/cat_monitor
 python3 -m venv .venv
-.venv/bin/pip install flask pillow numpy astral adafruit-blinka adafruit-circuitpython-neopixel
+.venv/bin/pip install -r requirements.txt
 ```
 
 **If `pip install` fails to build `lgpio`** with an error like
